@@ -1,5 +1,8 @@
 package com.secure_web.servlets;
 
+import org.owasp.html.PolicyFactory;
+import org.owasp.html.Sanitizers;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,7 +13,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
 import io.github.cdimascio.dotenv.Dotenv;
-
 @WebServlet("/messageboard")
 public class MessageBoardServlet extends HttpServlet {
 
@@ -122,7 +124,10 @@ public class MessageBoardServlet extends HttpServlet {
                 String sql = "INSERT INTO messages (username, message) VALUES (?, ?)";
                 PreparedStatement stmt = conn.prepareStatement(sql);
                 stmt.setString(1, username);
-                stmt.setString(2, message);
+                // Sanitize the message before storing it in the database to prevent xss
+                PolicyFactory policy = Sanitizers.FORMATTING.and(Sanitizers.BLOCKS);
+                String sanitizedMessage = policy.sanitize(message);
+                stmt.setString(2, sanitizedMessage);
                 stmt.executeUpdate();
             } catch (SQLException e) {
                 throw new ServletException(e);
