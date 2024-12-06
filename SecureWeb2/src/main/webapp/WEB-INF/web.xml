@@ -1,0 +1,85 @@
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
+  <filter>
+    <filter-name>AuthenticationFilter</filter-name>
+    <filter-class>com.secure_web.filters.AuthenticationFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>AuthenticationFilter</filter-name>
+    <url-pattern>/messageBoard.jsp</url-pattern>
+    <url-pattern>/welcome.jsp</url-pattern>
+    <url-pattern>/uploadProfilePictureServlet</url-pattern>
+    <!-- Add any other URLs you want to protect -->
+  </filter-mapping>
+
+  <!-- Servlet for Login -->
+  <servlet>
+    <servlet-name>LoginServlet</servlet-name>
+    <servlet-class>com.secure_web.servlets.LoginServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoginServlet</servlet-name>
+    <url-pattern>/login</url-pattern>
+  </servlet-mapping>
+
+  <!-- Servlet for Message Board -->
+  <servlet>
+    <servlet-name>MessageBoardServlet</servlet-name>
+    <servlet-class>com.secure_web.servlets.MessageBoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MessageBoardServlet</servlet-name>
+    <url-pattern>/messageBoard</url-pattern>
+  </servlet-mapping>
+
+  <!-- Servlet for Profile Picture Upload -->
+  <servlet>
+    <servlet-name>UploadProfilePictureServlet</servlet-name>
+    <servlet-class>com.secure_web.servlets.UploadProfilePictureServlet</servlet-class>
+    <multipart-config>
+      <max-file-size>2097152</max-file-size> <!-- Max file size (2MB in this example) -->
+      <max-request-size>4194304</max-request-size> <!-- Max request size (4MB in this example) -->
+      <file-size-threshold>0</file-size-threshold> <!-- Threshold for storing files temporarily -->
+    </multipart-config>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UploadProfilePictureServlet</servlet-name>
+    <url-pattern>/uploadProfilePicture</url-pattern>
+  </servlet-mapping>
+
+  <!-- Servlet for Logout -->
+  <servlet>
+    <servlet-name>LogoutServlet</servlet-name>
+    <servlet-class>com.secure_web.servlets.LogoutServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LogoutServlet</servlet-name>
+    <url-pattern>/logout</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>TestConnectivityServlet</servlet-name>
+    <servlet-class>com.secure_web.servlets.TestConnectivityServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>TestConnectivityServlet</servlet-name>
+    <url-pattern>/testConnectivity</url-pattern>
+  </servlet-mapping>
+  <!-- Welcome Page -->
+  <servlet>
+    <servlet-name>WelcomeServlet</servlet-name>
+    <servlet-class>com.secure_web.servlets.WelcomeServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>WelcomeServlet</servlet-name>
+    <url-pattern>/welcome</url-pattern>
+  </servlet-mapping>
+
+  <!-- Default Welcome File -->
+  <welcome-file-list>
+    <welcome-file>login.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>
